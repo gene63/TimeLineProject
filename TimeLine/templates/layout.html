@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block head %}
+        <link rel="stylesheet" href="style.css">
+        <title>TimeLineProject</title>
+        {% endblock %}
+    </head>
+    <body>
+        {% block header %}
+        <header style="background-color: gray">
+            <h1>LOGO</h1>
+            <h2>{{ name }}님 접속중!</h2>
+            <button onclick="document.location.href='/logout'">로그아웃</button>
+        </header>
+        {% endblock %}
+        {% block body %}
+        <div> 헤더 상단 구현.. </div>
+        {% endblock %}
+    </body>
+</html>

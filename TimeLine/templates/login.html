@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block header %}
+<!-- override header -->
+{% endblock %}
+{% block body %}
+    <form action="/login" method="POST">
+        <input type="text" name="userid"/>
+        <input type="password" name="password"/>
+        <input type="submit" value="login">
+    </form>
+{% endblock %}
