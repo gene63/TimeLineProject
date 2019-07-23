@@ -1,1 +1,2 @@
 .vscode/
+# TODO pycache 제외해야함. __pycache__ 
