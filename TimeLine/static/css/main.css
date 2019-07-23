@@ -1,6 +1,12 @@
 header{
     background-color: gray;
 }
-tuto{
-    color:red;
+.landing{
+    display: flex;  
+    justify-content: center;
+}
+.hello{
+    color:cadetblue; 
+    text-align:center; 
+    font-size:50px 
 }

@@ -3,6 +3,12 @@
 {% endblock %}
 
 {% block body %}
-<div class="tuto">Welcome to our TimeLine!</div>
-<button class="btn btn-primary" onclick="document.location.href = '/login'">로그인</button>
+
+<div class="landing">
+    <div class="hello">Welcome to our TimeLine Application!</div>
+    <div class = "logininfo">아이디가 있으세요?-></div>    
+    <button class="btn btn-primary btn-lg" onclick="document.location.href = '/login'">로그인</button><br>
+    <div class = "logininfo">처음이세요? -></div>    
+    <button class="btn btn-success btn-lg" >회원가입</button>
+</div>
 {% endblock %}
