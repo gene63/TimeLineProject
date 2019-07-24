@@ -21,6 +21,10 @@ def initiate_db():
     cur.executescript(open('db/schema.sql').read())
     # TODO : by sys argv, dropping database
 
+@app.route('/createaccount')
+def createaccount():
+    return render_template('createaccount.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

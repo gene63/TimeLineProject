@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block header %}
+{% endblock %}
+
+{% block body %}
+
+<table border="1" style="border-collapse:collapse">    
+    <th colspan="2" style="background-color : gray">TimeLine 회원가입</th>
+    <tr>
+    <td>이름</td>
+        <td><input type="text" name="newname"></td>
+    </tr>
+    <tr>
+        <td>아이디</td>
+        <td><input type="text" name="newid"></td>
+        <!--아이디 중복확인 기능 needed 어떻게 만들면 좋을까요??ㅠㅠ-->
+    </tr>
+    <tr>
+        <td>비밀번호</td>
+        <td><input type="text" name="newpw"></td>
+    </tr>
+    <tr>
+        <td>나이</td>
+        <td><input type="number" name="newage"></td>
+    </tr>
+    <tr>
+        <td>사진</td>
+        <td><input type="submit" name="newpicture" value="업로드"></td> 
+        <!--업로드 버튼 누르면 사진 업로드 할 수 있는 기능needed
+        java 라이브러리가 있다는데 어떻게 적용하는지 모르겠습니당 ㅠㅠ-->
+    </tr>
+    <tr>
+        <td>성별</td>
+        <td><select>
+            <option value="1">남자</option>
+            <option value="2">여자</option>
+        </select></td>
+        </tr>
+    <tr>
+        <td colspan="2">
+            <button type="button">
+            계정 생성
+            </button>
+        </td>
+    </tr>
+    </table>
+    <!--DB에 성공적으로 저장되면 '회원가입을 축하합니다' 창 띄우고 에러나면 '다시입력하세요.' 창 띄우기-->
+{% endblock %}

@@ -3,10 +3,10 @@ header{
 }
 .landing{
     display: flex;  
-    justify-content: center;
+    flex-direction: column;
 }
 .hello{
-    color:cadetblue; 
+    color:blue; 
     text-align:center; 
     font-size:50px 
 }
