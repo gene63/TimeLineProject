@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block header %}
+{% endblock %}
+
+{% block body %}
+
+<form action="/register" method="POST">
+    <div class="form-group">
+        <!-- TODO i18n 대응 -->
+        <label for="InputUserName">이름</label>
+        <input type="text" class="form-control" name="name" value="{{ name }}">
+    </div>
+    <div class="form-group">
+        <label for="InputUserEmail">이메일 주소</label>
+        <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="id@email.com" value="{{ email }}">
+        
+        {% if verify is sameas true %}
+        <span color="#00ff00">사용할 수 있는 아이디입니다.</span>
+        {% elif verify is sameas false %}
+        <span color="#ff0000">사용할 수 없는 아이디입니다.</span>
+        {% else %}
+        {% endif %}
+    </div>
+    <button type="submit" class="btn btn-primary mb-2" name="verify" value="verify">아이디 중복 확인</button>
+    <div class="form-group">
+        <label for="InputPassword">비밀번호</label>
+        <input type="password" class="form-control" name="password">
+    </div>
+    <!-- TODO pic, gender, age-->
+    {% if verify is sameas true %}
+    <input type="submit" class="form-control" name="register" value="register">
+    {% else %}
+    <input type="submit" class="form-control" name="register" value="register" disabled aria-disabled="true">
+    {% endif %}
+</form>
+<!-- TODO DB에 성공적으로 저장되면 '회원가입을 축하합니다' 창 띄우고 에러나면 '다시입력하세요.' 창 띄우기-->
+{% endblock %}

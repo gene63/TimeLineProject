@@ -21,9 +21,36 @@ def initiate_db():
     cur.executescript(open('db/schema.sql').read())
     # TODO : by sys argv, dropping database
 
-@app.route('/createaccount')
+@app.route('/register', methods=['GET', 'POST'])
 def createaccount():
-    return render_template('createaccount.html')
+    obj = {'email' : '', 'name' : ''}
+    if request.method == 'GET':
+        return render_template('register.html', **obj)
+    print(request.form)
+    print( 'verify' in request.form )
+    if 'verify' in request.form:
+        # 아이디 중복 검사
+        if 'email' in request.form:
+            obj['email'] = request.form['email']
+        if 'name' in request.form:
+            obj['name'] = request.form['name']
+        print(obj)
+        cur = get_db().cursor()
+        cur.execute('SELECT UID FROM USER where UID = ?', (request.form['email'],))
+        uid = cur.fetchall()
+        if len(uid) > 0:
+            return render_template('register.html', verify=False, **obj)
+        else:
+            return render_template('register.html', verify=True, **obj)
+
+    elif 'register' in request.form:
+        # TODO (minor) 회원 가입 데이터 유효성 검사
+        cur = get_db().cursor()
+        cur.execute('INSERT INTO USER (UID, PASSWORD, NAME) VALUES(?,?,?)', (request.form['email'], request.form['password'], request.form['name']))
+        get_db().commit()
+        # TODO (trivial) 가입시 바로 세션 전달 하면 좋을 것 같다.
+        return redirect(url_for('index'))
+    return render_template('register.html', **obj)
 
 
 @app.route('/login', methods=['GET', 'POST'])
