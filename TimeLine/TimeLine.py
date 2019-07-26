@@ -1,5 +1,6 @@
 import os
 import sys
+import hashlib
 import sqlite3
 from datetime import timedelta
 from flask import Flask, request, session, render_template, flash, redirect, url_for, g
@@ -46,7 +47,8 @@ def createaccount():
     elif 'register' in request.form:
         # TODO (minor) 회원 가입 데이터 유효성 검사
         cur = get_db().cursor()
-        cur.execute('INSERT INTO USER (UID, PASSWORD, NAME) VALUES(?,?,?)', (request.form['email'], request.form['password'], request.form['name']))
+        encrypted_password = hashlib.sha256(request.form['password'].encode()).hexdigest()
+        cur.execute('INSERT INTO USER (UID, PASSWORD, NAME) VALUES(?,?,?)', (request.form['email'], encrypted_password, request.form['name']))
         get_db().commit()
         # TODO (trivial) 가입시 바로 세션 전달 하면 좋을 것 같다.
         return redirect(url_for('index'))
@@ -58,26 +60,27 @@ def login():
     cur = get_db().cursor()
     if request.method == 'POST':
         print(request.form['userid'])
-        cur.execute('SELECT PASSWORD FROM USER where UID=?', (request.form['userid'],))
+        cur.execute('SELECT PASSWORD, NAME, UUID FROM USER where UID=?', (request.form['userid'],))
         pw = cur.fetchall()
-        print('timeline', request.form['userid'] == pw[0][0])
-        if len(pw) > 0 and request.form['password'] == pw[0][0]:
+        if len(pw) > 0 and hashlib.sha256(request.form['password'].encode()).hexdigest() == pw[0][0]:
             print('login success')
-            session['userid'] = request.form['userid']
+            # TODO (trivial) sqlite3 cursor index -> dictionary
+            session['username'] = pw[0][1]
+            session['useruid'] = pw[0][2]
         return redirect(url_for('index'))
         
     return render_template('login.html')
 
 @app.route('/logout')
 def logout():
-    if 'userid' in session:
-        del session['userid']
+    if 'useruid' in session:
+        del session['useruid']
     return redirect(url_for('index'))
 
 @app.route('/')
 def index():
-    if 'userid' in session:
-        username = session['userid']
+    if 'useruid' in session:
+        username = session['username']
         return render_template('index.html', name=username)
     return render_template('landing.html')
 
