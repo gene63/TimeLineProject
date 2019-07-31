@@ -79,6 +79,23 @@ def logout():
     return redirect(url_for('index'))
 
 
+@app.route('/user', defaults={'userid': None})
+@app.route('/user/<int:userid>')
+def user_feed(userid):
+    if 'useruid' not in session:
+        return render_template('landing.html')
+
+    if userid is None:
+        userid = session['useruid']
+
+    cur = get_db().cursor()
+    cur.execute('SELECT FEED FROM FEED where UID=?', (userid,))
+    feeds = cur.fetchall()
+    newsfeed = []
+    for feed in feeds:
+        newsfeed.append({'user': userid, 'text': feed[0]})
+    return render_template('index.html', name=session['username'], timeline=newsfeed)
+
 @app.route('/feed', methods=['POST'])
 def write_feed():
     if 'useruid' not in session:

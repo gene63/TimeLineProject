@@ -8,7 +8,7 @@
     </form>
     {% for feed in timeline %}
         <div class="container">
-            <span>{{ feed.user }}</span><span>{{ feed.text }}</span>
+            <a href="/user/{{ feed.user }}">{{ feed.user }}</a><span>{{ feed.text }}</span>
         </div>
     {% endfor %}
 {% endblock %}
