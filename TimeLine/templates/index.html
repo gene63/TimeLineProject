@@ -1,5 +1,11 @@
 {% extends "layout.html" %}
 {% block body %}
+    <form action="/feed" method="POST">
+        <div class="form-group">
+            <input type="text" class="form-control" name="feed" value="">
+            <input type="submit" class="form-control" value="작성하기">
+        </div>
+    </form>
     {% for feed in timeline %}
         <div class="container">
             <span>{{ feed.user }}</span><span>{{ feed.text }}</span>

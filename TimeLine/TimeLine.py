@@ -18,8 +18,7 @@ def get_db():
 
 @app.before_first_request
 def initiate_db():
-    conn = get_db()
-    cur = conn.cursor()
+    cur = get_db().cursor()
     cur.executescript(open('db/schema.sql').read())
     # TODO : by sys argv, dropping database
 
@@ -61,7 +60,6 @@ def createaccount():
 def login():
     cur = get_db().cursor()
     if request.method == 'POST':
-        print(request.form['userid'])
         cur.execute('SELECT PASSWORD, NAME, UUID FROM USER where UID=?', (request.form['userid'],))
         pw = cur.fetchall()
         if len(pw) > 0 and hashlib.sha256(request.form['password'].encode()).hexdigest() == pw[0][0]:
@@ -78,6 +76,18 @@ def login():
 def logout():
     if 'useruid' in session:
         del session['useruid']
+    return redirect(url_for('index'))
+
+
+@app.route('/feed', methods=['POST'])
+def write_feed():
+    if 'useruid' not in session:
+        return redirect(url_for('index'))
+
+    print(request.form)
+    cur = get_db().cursor()
+    cur.execute('INSERT INTO FEED (UID, FEED) values (?,?)', (session['useruid'], request.form['feed']))
+    get_db().commit()
     return redirect(url_for('index'))
 
 
