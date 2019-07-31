@@ -5,3 +5,36 @@ CREATE TABLE IF NOT EXISTS USER (
     NAME CHAR(40) NOT NULL);
 
 INSERT OR IGNORE INTO USER values (1, 'timeline', '94d192b3a326be1f019b71ef13ea5a367ffe939c5e9a88f1b270e53753d9569a', 'timeUser');
+INSERT OR IGNORE INTO USER values (2, 'timeline2', '94d192b3a326be1f019b71ef13ea5a367ffe939c5e9a88f1b270e53753d9569a', 'timeUser2');
+INSERT OR IGNORE INTO USER values (3, 'timeline3', '94d192b3a326be1f019b71ef13ea5a367ffe939c5e9a88f1b270e53753d9569a', 'timeUser3');
+
+-- TODO Do we need foreign key?
+CREATE TABLE IF NOT EXISTS FRIENDSHIP (
+    UUID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    UID INTEGER NOT NULL,                               -- USER ID
+    FID INTEGER NOT NULL                                -- FRIEND ID
+);
+
+INSERT OR IGNORE INTO FRIENDSHIP values (1, 1, 2);
+INSERT OR IGNORE INTO FRIENDSHIP values (2, 2, 1);
+INSERT OR IGNORE INTO FRIENDSHIP values (3, 1, 3);
+INSERT OR IGNORE INTO FRIENDSHIP values (4, 3, 1);
+
+
+CREATE TABLE IF NOT EXISTS FEED (
+    FUID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,    -- Feed Unique ID
+    UID INTEGER NOT NULL, 
+    FEED TEXT NOT NULL
+);
+
+INSERT OR IGNORE INTO FEED values (1, 1, 'timeline feed 1');
+INSERT OR IGNORE INTO FEED values (2, 1, 'timeuser feed 2');
+INSERT OR IGNORE INTO FEED values (3, 1, 'timeuser feed 3');
+
+INSERT OR IGNORE INTO FEED values (4, 2, 'timeUser2 feed 1');
+INSERT OR IGNORE INTO FEED values (5, 2, 'timeuser2 feed 2');
+INSERT OR IGNORE INTO FEED values (6, 2, 'timeuser2 feed 3');
+
+INSERT OR IGNORE INTO FEED values (7, 3, 'timeUser3 feed 1');
+INSERT OR IGNORE INTO FEED values (8, 3, 'timeuser3 feed 2');
+INSERT OR IGNORE INTO FEED values (9, 3, 'timeuser3 feed 3');

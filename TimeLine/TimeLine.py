@@ -15,12 +15,14 @@ def get_db():
         db = g._database = sqlite3.connect('db/TimeLine.db')
     return db
 
+
 @app.before_first_request
 def initiate_db():
     conn = get_db()
     cur = conn.cursor()
     cur.executescript(open('db/schema.sql').read())
     # TODO : by sys argv, dropping database
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def createaccount():
@@ -71,18 +73,35 @@ def login():
         
     return render_template('login.html')
 
+
 @app.route('/logout')
 def logout():
     if 'useruid' in session:
         del session['useruid']
     return redirect(url_for('index'))
 
+
 @app.route('/')
 def index():
-    if 'useruid' in session:
-        username = session['username']
-        return render_template('index.html', name=username)
-    return render_template('landing.html')
+    if 'useruid' not in session:
+        return render_template('landing.html')
+        
+    username = session['username']
+    userid = session['useruid']
+    print('userid ' , userid)
+    # TODO First get data by fast DB
+    cur = get_db().cursor()
+    cur.execute('SELECT FID FROM FRIENDSHIP where UID=?', (userid,))
+    friends = list(map(lambda item: str(item[0]), cur.fetchall()))
+    print('SELECT UID, FEED FROM FEED where UID IN ({friends})'.format(friends=','.join(friends)))
+    # TODO injection check!
+    cur.execute('SELECT UID, FEED FROM FEED where UID IN ({friends})'.format(friends=','.join(friends)))
+    feeds = cur.fetchall()
+    newsfeed = []
+    for feed in feeds:
+        newsfeed.append({'user': feed[0], 'text': feed[1]})
+    return render_template('index.html', name=username, timeline=newsfeed)
+    
 
 @app.teardown_appcontext
 def close_connection(exception):
