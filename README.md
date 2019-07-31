@@ -4,7 +4,7 @@
 ***
 <pre>
 $ pip install -r requirement.txt
-$ python __main__.py
+$ python app.py
 </pre>
 
 # TimeLine Project Planning document
